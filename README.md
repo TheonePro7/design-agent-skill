@@ -38,9 +38,37 @@ bash install.sh
 ```
 
 脚本会：
-1. 把 `skills/designer/` 复制到 `~/.claude/skills/designer/`
-2. 把 `L1-principles/` 等知识库复制到 `~/.hermes/design-kb/`
+1. 把 `skills/designer/`（含 `resources/` 知识库，自包含）复制到 `~/.claude/skills/designer/`
+2. 把 `L1-principles/` 等知识库复制到 `~/.hermes/design-kb/`（兼容本地 Hermes）
 3. 校验所有文件
+
+### 自动更新（推荐给分发的机器）
+
+```bash
+# 之后每次更新，拉 GitHub 最新再装
+bash install.sh --update
+```
+
+`--update` 会从 GitHub 拉取最新代码再安装，保证每台机器都拿到最新版 designer（含更新的知识库 resources/）。
+
+> 注意：`--update` 需要该机器能访问 GitHub（国内可配代理 `git config http.proxy http://127.0.0.1:7891`）。
+
+---
+
+## 分发机制（GitHub 自动更新，不依赖 Anthropic 官方订阅）
+
+本方案**完全不依赖 claude.ai 官方账号 / Shared skills**，因为 Claude Code 连的是 DeepSeek/cc-switch，走 GitHub 分发：
+
+- **权威源**：`TheonePro7/design-agent-skill` 仓库
+- **机器安装**：`git clone` + `bash install.sh`
+- **机器更新**：`bash install.sh --update`（拉最新）
+- **skill 自包含**：知识库已打进 `skills/designer/resources/`，不依赖本机 `~/.hermes/design-kb/`
+
+**更新流程**（你 Central 维护 → 大家自动同步）：
+1. 你在本地更新 `design-agent-skill` 仓库（改知识库/SKILL.md）
+2. `git push` 到 GitHub
+3. 各机器跑 `bash install.sh --update` 拉最新
+
 
 ### 手动安装
 
