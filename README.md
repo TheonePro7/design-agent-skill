@@ -199,3 +199,7 @@ design-agent-skill/
 3. **不要凑合**——半成品会被骂"凑合"
 4. **素材优先**——现成库先用，不手搓
 5. **数据真实**——图表禁 `Math.sin()` 假数据（最严重错误）
+
+## 相关
+
+- **Product-Manager Skill**（产品经理思维，设计的上游）：https://github.com/TheonePro7/product-manager-skill
