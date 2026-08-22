@@ -42,6 +42,53 @@ bash install.sh
 2. 把 `L1-principles/` 等知识库复制到 `~/.hermes/design-kb/`（兼容本地 Hermes）
 3. 校验所有文件
 
+---
+
+## 安装到 Hermes（专门指南）
+
+Hermes 用**不同的 skill 格式**（引号 description + version/author/platforms 字段，子目录叫 `references/` 而非 `resources/`），所以有**独立的安装包** `hermes/designer/`。
+
+### 方法一：手动安装脚本（推荐）
+
+```bash
+bash install-hermes.sh            # 从当前目录安装
+bash install-hermes.sh --update   # 从 GitHub 拉最新再装
+```
+
+脚本会：把 `hermes/designer/`（含 `references/` 知识库）装到 `~/.hermes/skills/creative/designer/`。
+
+### 方法二：hermes CLI 安装
+
+```bash
+# 从 GitHub 直接安装（identifier 指向 SKILL.md 的 raw URL）
+hermes skills install https://raw.githubusercontent.com/TheonePro7/design-agent-skill/main/hermes/designer/SKILL.md --category creative --name designer --yes
+```
+
+### Hermes 里怎么用
+
+装好后，Hermes 会在对话中说"设计/改样式/UI"等词时自动加载 `designer`，或手动：
+```
+/designer
+```
+或加载 skill 后说"加载 designer，优化这个页面"。
+
+### Hermes skill 目录（安装后）
+
+```
+~/.hermes/skills/creative/designer/
+├── SKILL.md                    # Hermes 格式入口（引号 description + version + author）
+└── references/                 # Hermes 用 references/（Claude Code 用 resources/）
+    ├── _INDEX.md               # 54系统分桶索引
+    ├── assets-index.md         # L0素材库选型
+    ├── reference-*.md          # 参考解剖（Linear/Stripe/Vercel/Claude）
+    ├── principles-*.md         # 5大原理（布局/排版/色彩/交互/无障碍）
+    └── corrections.md          # 反馈闭环
+```
+
+> 注意：Hermes 和 Claude Code 的 skill 是**两份独立副本**（格式不同）。`install.sh` 装 Claude Code 版，`install-hermes.sh` 装 Hermes 版。
+
+---
+
 ### 自动更新（推荐给分发的机器）
 
 ```bash
