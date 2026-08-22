@@ -12,11 +12,11 @@ platforms: [windows, linux, macos]
 
 ---
 
-## 〇、加载时必做（3 步）
+## 〇、加载时必做（4 步）
 
 1. **定位知识库**：`~/.hermes/design-kb/`（若不存在，从本 skill 的 `references/` 重建）
 2. **加载 L1 核心**：读 `L1-principles/_INDEX.md` + `assets-index.md`（素材库必查）
-3. **加载 L2 项目**：读对应项目的 `L2-projects/<project>.md`（有则用，无则新建）
+3. **智能加载 L2 项目**：见下方『L2 项目规范智能管理』——按项目状态选 询问/提取/复用
 4. **读 L3 教训**：读 `L3-lessons/corrections.md`（避免重复踩坑）
 
 ---
@@ -88,6 +88,62 @@ pnpm add framer-motion gsap
 5. **动手实现** → 遵守 L1 原理 + 项目规范
 6. **截图验证** → browser_vision 看效果再提交
 7. **读取教训** → corrections.md 避免重复踩坑
+
+---
+
+## 五·五、L2 项目规范智能管理（核心智能）
+
+> ⚠️ 这是 skill 智能性的关键。不要机械地"复制模板"，要按项目**真实状态**决定动作。
+
+### 决策树
+
+```
+项目 L2-projects/<project>.md 存在吗？
+│
+├─ ❌ 不存在 = 冷启动（新项目）
+│    └─ 走【路径A · 询问】——先问用户风格，据此定 token
+│
+└─ ✅ 存在 = 有基础
+     └─ 项目代码匹配当前 token 吗？
+        ├─ ✅ 匹配 = 直接复用（什么都不做）
+        └─ ❌ 不匹配/项目已演化 = 走【路径B · 提取】
+```
+
+### 路径A · 冷启动：先问用户设计风格（不猜）
+
+新项目无 token 时，**必须询问用户**，而不是自己捏造。问 3 个问题：
+
+1. **参考哪个系统？**（Linear 暗色后台 / Stripe 营销 / Vercel 极简 / Claude 暖色）
+2. **明暗模式？**（深色 / 浅色 / 跟随系统）
+3. **品牌色？**（主色 + 强调色，用户给 hex 或让 skill 从 logo/品牌图提取）
+
+> 用户答完后：查 `_INDEX.md` 定位参考桶 → 抽该参考的 core token → 结合用户给的品牌色 → 生成 `L2-projects/<project>.md`。
+
+### 路径B · 已有基础：自动整理 token
+
+项目已有设计基础（tailwind.config / index.css / 自建组件 / 已存在的色值），**自动扫描提取**整理成标准 token，不靠用户重写：
+
+```bash
+# 1. 扫描 tailwind 配置 / CSS 变量
+grep -nE "colors:|backgroundColor|#[0-9a-fA-F]{6}|rgba\(" tailwind.config.* src/index.css 2>/dev/null | head -30
+
+# 2. 扫描已有组件用的颜色/字号
+grep -rnoE "(text|bg|border)-(ink|muted|accent|line|surface|raised)\b|text-\[[0-9]+px\]" src/components/ui/*.tsx 2>/dev/null | sort -u | head -30
+```
+
+提取后整理成标准 L2 结构（品牌色/参考/颜色令牌/排版/组件），每个 token 标注来源：
+- `✦ 用户确认`（用户明确给的）
+- `⚙ 从 tailwind.config 提取`
+- `✎ 从 index.css 提取`
+
+### 检测项目是否匹配当前 token
+
+```bash
+# 项目里用了多少 token 类 vs 裸色
+grep -rc "text-ink\|text-muted\|token\|var(--)" src/ --include="*.tsx" 2>/dev/null | head
+grep -rn "#[0-9a-fA-F]\{6\}" src/ --include="*.tsx" 2>/dev/null | grep -v "var(--" | head
+```
+若裸色远多于 token → 说明项目没接入 token 系统，走路径B 提取整理。
 
 ---
 
