@@ -91,37 +91,43 @@ pnpm add framer-motion gsap
 
 ---
 
-## 五·五、L2 项目规范智能管理（核心智能）
+## 五·五、L2 项目规范智能管理（核心智能，A-E 全增强）
 
 > ⚠️ 这是 skill 智能性的关键。不要机械地"复制模板"，要按项目**真实状态**决定动作。
+> 智能 5 件套：A 跨项目复用 / B token冲突检测 / C 自动生成DESIGN.md / D 反馈闭环主驱动 / E 版本化。
 
-### 决策树
+### 决策树（含 A 跨项目复用）
 
 ```
 项目 L2-projects/<project>.md 存在吗？
 │
-├─ ❌ 不存在 = 冷启动（新项目）
-│    └─ 走【路径A · 询问】——先问用户风格，据此定 token
+├─ ❌ 不存在 = 冷启动（新项目）→ 走【路径A · 询问】
+│    └─ 同时【增强A】扫描 L2-projects/ 找最像的已建项目，复用其 token 作为起点
 │
 └─ ✅ 存在 = 有基础
      └─ 项目代码匹配当前 token 吗？
         ├─ ✅ 匹配 = 直接复用（什么都不做）
-        └─ ❌ 不匹配/项目已演化 = 走【路径B · 提取】
+        └─ ❌ 不匹配/已演化 = 走【路径B · 提取】→ 触发【增强B/C/D/E】
 ```
 
-### 路径A · 冷启动：先问用户设计风格（不猜）
+### 路径A · 冷启动：先问用户设计风格（不猜）+ 复用兄弟项目
 
 新项目无 token 时，**必须询问用户**，而不是自己捏造。问 3 个问题：
 
 1. **参考哪个系统？**（Linear 暗色后台 / Stripe 营销 / Vercel 极简 / Claude 暖色）
 2. **明暗模式？**（深色 / 浅色 / 跟随系统）
-3. **品牌色？**（主色 + 强调色，用户给 hex 或让 skill 从 logo/品牌图提取）
+3. **品牌色？**（主色 + 强调色，用户给 hex 或从 logo/品牌图提取）
 
-> 用户答完后：查 `_INDEX.md` 定位参考桶 → 抽该参考的 core token → 结合用户给的品牌色 → 生成 `L2-projects/<project>.md`。
+**增强A · 跨项目复用**（做完 3 问后）：
+```bash
+# 扫描 L2-projects/ 找参考系统相同的兄弟项目
+grep -l "参考系统.*Linear\|参考系统.*Stripe\|参考系统.*Claude" L2-projects/*.md 2>/dev/null
+```
+若找到兄弟项目（如 kuaishou 和 xgeo 同为 Linear 暗色），**以它的 token 为起点**，只改品牌色等差异项，不从零造。这样跨项目风格自动统一，且省时。
 
 ### 路径B · 已有基础：自动整理 token
 
-项目已有设计基础（tailwind.config / index.css / 自建组件 / 已存在的色值），**自动扫描提取**整理成标准 token，不靠用户重写：
+项目已有设计基础（tailwind.config / index.css / 自建组件），**自动扫描提取**整理成标准 token：
 
 ```bash
 # 1. 扫描 tailwind 配置 / CSS 变量
@@ -131,10 +137,49 @@ grep -nE "colors:|backgroundColor|#[0-9a-fA-F]{6}|rgba\(" tailwind.config.* src/
 grep -rnoE "(text|bg|border)-(ink|muted|accent|line|surface|raised)\b|text-\[[0-9]+px\]" src/components/ui/*.tsx 2>/dev/null | sort -u | head -30
 ```
 
-提取后整理成标准 L2 结构（品牌色/参考/颜色令牌/排版/组件），每个 token 标注来源：
+提取后整理成标准 L2 结构，每个 token 标注来源：
 - `✦ 用户确认`（用户明确给的）
 - `⚙ 从 tailwind.config 提取`
 - `✎ 从 index.css 提取`
+
+**增强B · token 冲突检测**（提取时对照 L1 原理）：
+```bash
+# 检测项目是否用了 L1 禁用的样式（渐变/彩色glow/emoji图标/手搓table）
+grep -rn "linear-gradient\|box-shadow" src/ --include="*.tsx" --include="*.css" 2>/dev/null | head
+grep -rn "<table" src/ --include="*.tsx" 2>/dev/null | head
+```
+命中 → 在 L2 里标记 `⚠️ 冲突` 并给出替代方案（如渐变→发丝边框，手搓table→OpsDataTable）。**不擅自改用户代码，只警告**。
+
+**增强C · 自动生成项目 DESIGN.md**（提取完成后）：
+把提取的 token 自动写成 `项目根目录/DESIGN.md`（不只是存 L2），供整个团队和别的 agent 直接用：
+```bash
+# 生成到项目根（若无则建）
+cat > 项目根/DESIGN.md <<'DESIGN'
+# {项目名} DESIGN
+> 由 designer skill 自动提取生成，来源见各 token 标注。
+（写入品牌色/参考/颜色令牌/排版/组件规范）
+DESIGN
+```
+已是 git 仓库则 `git add DESIGN.md` 提交（若用户允许）。
+
+**增强D · 反馈闭环主驱动**（每次设计交付后自动评估）：
+设计交付不是终点——**每次设计完成后自动跑盘**：
+1. `browser_vision` 截图当前效果
+2. 对照 L1 原理 + L2 token 自检（颜色/层级/对比度/动效）
+3. 把结果写回 `L3-lessons/corrections.md`（做对了记表扬，踩坑了记纠正）
+
+这样 L3 从"被动等用户骂"升级成"主动评估"，知识库越用越准。
+
+**增强E · 版本化**（L2 token 带版本 + 变更历史）：
+每个 L2 文件头部记录 `version` 和变更日志：
+```markdown
+# L2 项目规范 · {项目名}
+> version: 1.1.0   # 语义化：大改=1.x 加token=0.x
+> 变更：
+>   1.1.0 (2026-08-22) 新增信息层级 token，品牌色微调
+>   1.0.0 (2026-08-22) 首次提取
+```
+项目演化时 `version++` 并追加变更行，避免"改了哪页、token 怎么变的"说不清。
 
 ### 检测项目是否匹配当前 token
 
@@ -144,6 +189,15 @@ grep -rc "text-ink\|text-muted\|token\|var(--)" src/ --include="*.tsx" 2>/dev/nu
 grep -rn "#[0-9a-fA-F]\{6\}" src/ --include="*.tsx" 2>/dev/null | grep -v "var(--" | head
 ```
 若裸色远多于 token → 说明项目没接入 token 系统，走路径B 提取整理。
+
+### 智能性自检（每次 L2 操作后问自己）
+
+1. ✅ 我问过用户风格了吗（冷启动）？还是自己捏造了？
+2. ✅ 我找过兄弟项目复用了吗（A）？还是从零造？
+3. ✅ 我检测过 L1 冲突了吗（B）？还是照抄？
+4. ✅ 我生成 DESIGN.md 到项目根了吗（C）？
+5. ✅ 我写回反馈闭环了吗（D）？
+6. ✅ 版本号 + 变更日志更新了吗（E）？
 
 ---
 

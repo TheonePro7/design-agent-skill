@@ -1,8 +1,10 @@
 # L2 项目规范 · 快手店铺经营分析
 
+> version: 1.0.0
 > 来源：路径B 自动提取（从 tailwind.config + index.css + ui/ 组件扫描）
 > 项目：`/f/AI/kuaishou/frontend` · React + TS + Vite + Tailwind
 > 用途：此项目的所有 UI 工作基准。
+> 变更：1.0.0 (2026-08-22) 首次从 tailwind.config 提取
 
 ---
 
