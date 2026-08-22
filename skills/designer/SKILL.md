@@ -150,6 +150,13 @@ grep -rn "<table" src/ --include="*.tsx" 2>/dev/null | head
 ```
 命中 → 在 L2 里标记 `⚠️ 冲突` 并给出替代方案（如渐变→发丝边框，手搓table→OpsDataTable）。**不擅自改用户代码，只警告**。
 
+⚠️ **实测教训（2026-08-22 快手项目）**：`<table>` 命中时**先排除封装组件内部**——`components/ui/DataTable.tsx` 等封装组件**内部**用原生 `<table>` 是合法实现，不是业务手搓。判违规要看**业务页面**（非 components/ui/）是否手搓：
+```bash
+# 正确：只看业务页面手搓，排除封装组件
+grep -rn "<table" src/ --include="*.tsx" 2>/dev/null | grep -v "components/ui/" | head
+```
+同理，`linear-gradient`/`box-shadow` 若出现在封装组件或图表库内部，也可能合法，需结合上下文判断。
+
 **增强C · 自动生成项目 DESIGN.md**（提取完成后）：
 把提取的 token 自动写成 `项目根目录/DESIGN.md`（不只是存 L2），供整个团队和别的 agent 直接用：
 ```bash
