@@ -1,0 +1,32 @@
+{
+  "$comment": "设计 Agent 通用库清单——跨机自动安装。agent 触发时读取，检查目标项目缺啥就 pnpm add。",
+  "dependencies": {
+    "lucide-react": { "purpose": "图标库", "install": "pnpm add lucide-react" },
+    "recharts": { "purpose": "图表库", "install": "pnpm add recharts" },
+    "framer-motion": { "purpose": "动效库", "install": "pnpm add framer-motion" },
+    "gsap": { "purpose": "动画引擎", "install": "pnpm add gsap" },
+    "react-bits": { "purpose": "现成动效组件(8个)", "install": "pnpm add react-bits" },
+    "@radix-ui/react-dialog": { "purpose": "弹窗", "install": "pnpm add @radix-ui/react-dialog" },
+    "@radix-ui/react-dropdown-menu": { "purpose": "下拉菜单", "install": "pnpm add @radix-ui/react-dropdown-menu" },
+    "@radix-ui/react-select": { "purpose": "下拉选择", "install": "pnpm add @radix-ui/react-select" },
+    "@radix-ui/react-tabs": { "purpose": "Tab 导航", "install": "pnpm add @radix-ui/react-tabs" },
+    "@tanstack/react-table": { "purpose": "数据表格", "install": "pnpm add @tanstack/react-table" },
+    "@tanstack/react-router": { "purpose": "路由", "install": "pnpm add @tanstack/react-router" },
+    "zustand": { "purpose": "状态管理", "install": "pnpm add zustand" },
+    "sonner": { "purpose": "toast 反馈", "install": "pnpm add sonner" },
+    "class-variance-authority": { "purpose": "组件变体", "install": "pnpm add class-variance-authority" },
+    "tailwind-merge": { "purpose": "样式合并", "install": "pnpm add tailwind-merge" },
+    "clsx": { "purpose": "类名工具", "install": "pnpm add clsx" }
+  },
+  "devDependencies": {
+    "tailwindcss": { "purpose": "原子CSS", "install": "pnpm add -D tailwindcss" },
+    "@tailwindcss/vite": { "purpose": "Tailwind Vite 插件", "install": "pnpm add -D @tailwindcss/vite" },
+    "tailwindcss-animate": { "purpose": "Tailwind 动画", "install": "pnpm add -D tailwindcss-animate" },
+    "@types/react": { "purpose": "React 类型", "install": "pnpm add -D @types/react" },
+    "@types/react-dom": { "purpose": "React DOM 类型", "install": "pnpm add -D @types/react-dom" }
+  },
+  "fonts": {
+    "Inter": "pnpm add @fontsource-variable/inter",
+    "JetBrains Mono": "pnpm add @fontsource-variable/jetbrains-mono"
+  }
+}

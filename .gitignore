@@ -1,0 +1,16 @@
+# 敏感信息
+*.pem
+*.key
+.env
+.env.*
+**/.admin_password
+**/credentials.json
+
+# 节点模块
+node_modules/
+dist/
+build/
+
+# 系统文件
+.DS_Store
+Thumbs.db
