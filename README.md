@@ -21,6 +21,7 @@
 
 ```
 ~/.claude/skills/designer/SKILL.md        ← 入口 skill（Claude Code 自动加载）
+~/.agents/skills/designer/SKILL.md        ← DSH 用户技能根（DeepSeek Harness 自动加载）
 ~/.hermes/design-kb/manifest.json         ← 通用库自动安装清单
 ~/.hermes/design-kb/L1-principles/        ← 设计原理 + 参考解剖 + 素材库 + 分桶索引
 ~/.hermes/design-kb/L2-projects/          ← 项目规范（每项目一份 DESIGN.md）
@@ -89,11 +90,62 @@ hermes skills install https://raw.githubusercontent.com/TheonePro7/design-agent-
 
 ---
 
+## 安装到 DSH（DeepSeek Harness）
+
+DSH 复用 **Claude Code 的目录式 skill 格式**（`SKILL.md` + `resources/`），所以**不需要单独拷一份**：直接用 `skills/designer/` 即可。DSH 会解析头部的 `name` / `description`，并支持可选字段 `whenToUse` / `metadata`。
+
+### 一键安装（推荐）
+
+```bash
+bash install-dsh.sh
+```
+
+脚本会：
+1. 把 `skills/designer/`（含 `resources/` 知识库，自包含）复制到 `~/.agents/skills/designer/`（DSH 的 user-agents 用户技能根）
+2. 同步 `L1-principles/` 等知识库到 `~/.hermes/design-kb/`（与 `install.sh` 一致）
+3. 校验所有文件
+
+### 手动安装
+
+```bash
+# 把自包含 skill 复制到 DSH 用户技能根
+mkdir -p ~/.agents/skills
+cp -r skills/designer ~/.agents/skills/designer
+```
+
+> 安装目录可用环境变量覆盖：`DSH_AGENTS_HOME`，或用 `bash install-dsh.sh --target /path/to/skills`。
+
+### DSH 里怎么用
+
+装好后，DSH 会在对话中说"设计/改样式/UI/页面美化"等词时自动关联 `designer`，或手动：
+```
+/designer
+```
+或加载 skill 后说"加载 designer，优化这个页面"。
+
+### DSH skill 目录（安装后）
+
+```
+~/.agents/skills/designer/
+├── SKILL.md                    # DSH 格式入口（yaml 头部 name/description/whenToUse）
+└── resources/                  # DSH 与 Claude Code 共用 resources/
+    ├── _INDEX.md               # 54系统分桶索引
+    ├── assets-index.md         # L0素材库选型
+    ├── reference-*.md          # 参考解剖（Linear/Stripe/Vercel/Claude）
+    └── principles-*.md         # 5大原理（布局/排版/色彩/交互/无障碍）
+```
+
+> DSH 使用与 Claude Code 相同的目录式 skill，因此无独立副本；Hermes 仍是独立格式（见上）。
+
+---
+
 ### 自动更新（推荐给分发的机器）
 
 ```bash
 # 之后每次更新，拉 GitHub 最新再装
-bash install.sh --update
+bash install.sh --update        # Claude Code
+bash install-dsh.sh --update    # DSH（DeepSeek Harness）
+bash install-hermes.sh --update # Hermes
 ```
 
 `--update` 会从 GitHub 拉取最新代码再安装，保证每台机器都拿到最新版 designer（含更新的知识库 resources/）。
@@ -174,10 +226,12 @@ Claude Code 加载 `designer` skill 后，会：
 ```
 design-agent-skill/
 ├── README.md              # 本文件
-├── install.sh             # 一键安装脚本
+├── install.sh             # Claude Code 一键安装脚本
+├── install-hermes.sh      # Hermes 安装脚本（独立格式）
+├── install-dsh.sh         # DSH（DeepSeek Harness）安装脚本
 ├── manifest.json          # 通用库自动安装清单
 ├── skills/designer/
-│   └── SKILL.md           # 设计 Agent 入口（含 GATE 门禁）
+│   └── SKILL.md           # 设计 Agent 入口（Claude Code / DSH 共用，含 GATE 门禁）
 ├── L1-principles/         # 设计原理 + 参考解剖
 │   ├── _INDEX.md          # 54系统分桶索引 A-H
 │   ├── assets-index.md    # 素材库·不手搓

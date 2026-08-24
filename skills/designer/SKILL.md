@@ -1,6 +1,16 @@
 ---
 name: designer
-description: 顶级设计 Agent 入口——自动加载设计知识库资源（参考解剖 + 学科原理 + 素材库选型）并遵守门禁。Use when user asks for UI design, frontend styling, 页面美化, design system, 改样式, visual/design work, or wants a professional design standard.
+description: >-
+  顶级设计 Agent 入口——让任意 agent 达到「可用且好看」的设计水平，跨项目复用、不重训。
+  自动加载设计知识库资源（参考解剖 + 学科原理 + 素材库选型），并遵守 GATE 0-3 门禁。
+  Use when user asks for UI design, frontend styling, 页面美化, design system, 改样式,
+  visual/design work, 前端/界面美化, 设计规范, or wants a professional design standard.
+whenToUse: >-
+  触发场景：UI 设计 / 前端样式改造 / 页面美化 / 设计系统搭建 / 界面视觉 / 改样式 / 设计规范。
+  用户提及"高级 / 好看 / 设计 / 样式 / UI / 界面展示效果"等视觉诉求时使用。
+metadata:
+  upstream: https://github.com/TheonePro7/design-agent-skill
+  note: 共用目录式 skill；DSH 兼容（whenToUse / metadata）
 ---
 
 # 设计 Agent 入口
