@@ -1,126 +1,102 @@
-# L1 参考库 · 分桶索引
+# L1 参考库 · 设计系统分桶索引（open-design 版）
 
-> 54 个真实设计系统按场景分类。每桶标代表（已蒸馏）+ 备选（未蒸馏，需要时再煮）。
-> 用途：做任何项目先查这个索引 → 确认项目场景 → 加载对应桶的代表知识文件。
-
----
-
-## A. 运营后台 / 管理面板（暗色）——项目经理/数据分析
-
-| 设计系统 | 风格 | 状态 |
-|:--|:--|:--|
-| **Linear** | 极简暗色、平面、单强调色 | ✅ 已蒸馏 `reference-linear.md` |
-| Sentry | 暗色紫、开发者工具 | 备选 |
-| PostHog | 数据分析暗色 | 备选 |
-| Raycast | 暗色、启动器 | 备选 |
-| Grafana(无) | — | — |
-
-**适用**：XGEO 运营中台、管理后台、开发者控制台、数据密集型界面。
+> 152 个真实设计系统按场景分类。**20 个已蒸馏**（✅ reference-*.md 随包带），**132 个备选**（🔗 源在 open-design/design-systems/<name>，需要时再煮）。
+> 用途：做任何项目先查此索引 → 确认项目场景 → 加载对应桶 ✅ 已蒸馏文件。**备选**用 `git clone open-design` 后从源 DESIGN.md + design-tokens.json 取。
 
 ---
 
-## B. 营销落地页（浅色/明亮）——商业化、获客
+## A. 暗色运营后台 / 管理面板（数据密集）
 
 | 设计系统 | 风格 | 状态 |
 |:--|:--|:--|
-| **Stripe** | 白底、深藏青标题、签名紫、多图层蓝调阴影 | ✅ 已蒸馏 `reference-stripe.md` |
-| Vercel | 纯白、近黑、阴影即边框、极端负字距 | 备选 |
-| Notion | 暖中性、超细边框、克制阴影 | 备选 |
-| Supabase | 开发者营销、绿松石 | 备选 |
-| Mintlify | 文档平台 | 备选 |
+| **Linear** | 极简暗色、单紫强调、透明梯级、发丝边、负字距 | ✅ `reference-linear.md` |
+| **Supabase** | 暗色开发者、翡翠绿 accent、黑 pill CTA | ✅ `reference-supabase.md` |
+| **Trading-Terminal** | 交易终端、海军黑蓝底、涨绿跌红 | ✅ `reference-trading-terminal.md` |
+| **Dashboard** | 浅色冷调仪表盘、天空蓝、mono 眉题 | ✅ `reference-dashboard.md` |
+| Raycast | 暗色启动器、红+蓝双色、物理阴影 | ✅ `reference-raycast.md` |
+| Sentry / PostHog · 备选 | PostHog 已蒸馏（浅色橄榄） | 🔗 |
 
-**适用**：官网、产品页、获客落地页、定价页。
-
----
-
-## C. 暖色品牌 / 人文科技
+## B. 营销落地页 / 官网（浅色商业）
 
 | 设计系统 | 风格 | 状态 |
 |:--|:--|:--|
-| **Claude** | 羊皮纸暖色、serif 标题、陶土色 | ✅ 已蒸馏 `reference-claude.md` |
-| Cohere | AI、品牌色 | 备选 |
+| **Stripe** | 白底、深藏青标题、签名紫、蓝调多层阴影 | ✅ `reference-stripe.md` |
+| **Vercel** | 纯白、近黑、阴影即边框、极端负字距 | ✅ `reference-vercel.md` |
+| **Bento** | 浅色模块化网格、单一品牌蓝、留白>边框 | ✅ `reference-bento.md` |
+| Mintlify / Framer / Webflow · 备选 | 文档/建站 | 🔗 |
 
-**适用**：内容产品、AI 对话产品、品牌叙事。
-
----
-
-## D. 金融 / 信任 / 数据可视化
+## C. 生产力 / 协作 SaaS
 
 | 设计系统 | 风格 | 状态 |
 |:--|:--|:--|
-| Stripe | 金融信任 | ✅ 见 B |
-| Wise | 金融、透明 | 备选 |
-| Revolut | 金融、深色 | 备选 |
-| Kraken | 加密、深色 | 备选 |
-| Coinbase | 加密、蓝 | 备选 |
-| Clickhouse | 数据、DB | 备选 |
+| **Notion** | 暖中性、超细边框、克制阴影、单蓝 accent | ✅ `reference-notion.md` |
+| **Intercom** | 暖奶油底、Fin 橙 accent、4px 几何、物理缩放 | ✅ `reference-intercom.md` |
+| Airtable / Figma / Miro / Superhuman · 备选 | 表格/设计/白板/邮件 | 🔗 |
 
-**适用**：金融产品、数据产品、信任型 SaaS。
-
----
-
-## E. 开发者工具 / 极客
+## D. 数据分析 / 图表 / 数据库
 
 | 设计系统 | 风格 | 状态 |
 |:--|:--|:--|
-| Vercel | 极简 | ✅ 见 B |
-| Cursor | AI 编辑器 | 备选 |
-| Ollama | AI 本地 | 备选 |
-| OpenCode | AI 编码 | 备选 |
-| x.ai | AI | 备选 |
+| **ClickHouse** | 纯黑画布、Neon Volt 唯一彩色、900 hero | ✅ `reference-clickhouse.md` |
+| **PostHog** | 温奶油浅色、橄榄绿、手绘感、IBM Plex | ✅ `reference-posthog.md` |
+| Grafana / MongoDB · 备选 | 监控/数据 | 🔗 |
 
----
-
-## F. 消费 / 电商 / 生活方式
+## E. 现代组件库 / 开发者
 
 | 设计系统 | 风格 | 状态 |
 |:--|:--|:--|
-| Apple | 极简、留白 | 备选 |
-| Airbnb | 温暖、图片导向 | 备选 |
-| Uber | 黑底、动效 | 备选 |
-| Spotify | 绿黑、沉浸 | 备选 |
-| Pinterest | 图片瀑布流 | 备选 |
+| **shadcn** | 现代组件库、中性、可定制、Geist | ✅ `reference-shadcn.md` |
+| **GitHub** | 白原生、实心边框、实心语义色 | ✅ `reference-github.md` |
+| Cursor / OpenCode / Ollama · 备选 | AI 编辑器/本地 | 🔗 |
 
----
-
-## G. 协作 / 效率工具
+## F. 消费科技 / 电商 / 生活方式
 
 | 设计系统 | 风格 | 状态 |
 |:--|:--|:--|
-| Notion | 暖中性、克制 | ✅ 见 B |
-| Figma | 设计工具 | 备选 |
-| Superhuman | 邮件 | 备选 |
-| Airtable | 表格 | 备选 |
-| Miro | 白板 | 备选 |
+| **Apple** | 大留白、克制冷艳、灰白银、字重 600 | ✅ `reference-apple.md` |
+| **Airbnb** | 图片导向、温暖留白、Rausch 红、圆形几何 | ✅ `reference-airbnb.md` |
+| Nike / Tesla / Uber / Shopify · 备选 | 消费/出行/电商 | 🔗 |
 
----
-
-## H. 企业 / 品牌大气
+## G. 媒体 / 娱乐 / 沉浸
 
 | 设计系统 | 风格 | 状态 |
 |:--|:--|:--|
-| IBM | 企业、蓝色 | 备选 |
-| HashiCorp | 基础设施 | 备选 |
-| NVIDIA | 显卡、绿黑 | 备选 |
-| MongoDB | 数据 | 备选 |
-| Intercom | 客服 | 备选 |
+| **Spotify** | 黑底三级、绿 accent、药丸、重阴影 | ✅ `reference-spotify.md` |
+| Discord / Twitch(无) / Netflix(无) · 备选 | 社区/直播 | 🔗 |
+
+## H. 游戏化 / 教育 / 暖色趣味
+
+| 设计系统 | 风格 | 状态 |
+|:--|:--|:--|
+| **Duolingo** | 白底、主绿、实心硬边阴影、800 字重、back-out 弹性 | ✅ `reference-duolingo.md` |
+| Kahoot(无) / Grammarly(无) · 备选 | — | 🔗 |
+
+## I. 暖色人文 / AI 内容
+
+| 设计系统 | 风格 | 状态 |
+|:--|:--|:--|
+| **Claude** | 羊皮纸暖色、serif 标题、陶土、环阴影 | ✅ `reference-claude.md` |
+| Cohere / Warm-Editorial · 备选 | AI/暖色叙事 | 🔗 |
+
+## J. 极简 / 通用
+
+| 设计系统 | 风格 | 状态 |
+|:--|:--|:--|
+| **Minimal** | hairline 浅色抬升、恒负字距、8 级间距 | ✅ `reference-minimal.md` |
+| Default / Modern / Clean / Simple · 备选 | 通用 | 🔗 |
 
 ---
 
 ## 使用流程（做项目前必做）
 
-1. **判断场景** → 上面 A~H 哪一桶
-2. **加载代表** → 读对应桶✅已蒸馏的知识文件
-3. **需要更细** → 读对应桶备选模板全文
-4. **确认风格** → 用 `browser_vision` 截真实参考站对比
+1. **判断场景** → 上面 A~J 哪桶
+2. **加载已蒸馏** → 读对应 ✅ `reference-<name>.md`
+3. **需要更细/备选风格** → `git clone https://github.com/nexu-io/open-design.git` 后读 `design-systems/<name>/DESIGN.md` + `design-tokens.json`（数据以 token 为准）
+4. **确认风格** → `browser_vision` 截真实参考站对比
 5. **蒸馏落地** → 按项目 DESIGN.md 写自己的 token/组件
 
----
+## ⚠️ 数据铁律
 
-## 待蒸馏优先级（按用户当前项目排序）
-
-1. ⭐ **Stripe**（营销落地页——XGEO 官网/定价页、直播公司官网要用）
-2. ⭐ **Vercel**（极简开发者产品——工具型落地页）
-3. ⭐ **Claude**（暖色品牌——内容型/AI 产品）
-4. Datadog/PostHog（数据可视化仪表盘）
-5. Airbnb/Apple（消费级电商——直播公司商城）
+- **颜色以 `design-tokens.json` 为准**（source-backed），DESIGN.md 文学描述与 token 冲突时**采信 token**（多处已标注 ⚠️）
+- posthog/dashboard 实测为**浅色**（非深色），选参考时注意
+- claude 是 serif + **正字距**（与 Linear 负字距相反），勿混用
