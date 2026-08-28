@@ -1,259 +1,80 @@
-# Design Agent Skill — 顶级设计能力包
+# Design Agent Skill — 让任何 AI 智能体「可用且好看」
 
-> 让 Claude Code / Hermes / Codex 达到「可用且好看」的设计水平，跨项目复用，不重训。
-> 知识库 ≠ 文档堆——已蒸馏成 agent 可直接执行的规则，含 GATE 0-3 门禁。
+> 装一个 skill，你的 agent 立刻具备**世界级设计师**的水平：跨项目复用、不重训、自带硬门禁。
+> 支持 **Claude Code / DSH (DeepSeek Harness) / Hermes / Codex** 四大平台。
 
----
+## 这不是「一堆资料」，是「能直接执行的规则」
 
-## 这是什么
-
-一个完整的**设计数字员工**能力包，包含：
-- **设计原理**（Gestalt / 排版 / 色彩 / 交互 / 无障碍）——学科共识
-- **参考解剖**（Linear / Stripe / Vercel / Claude）——4 大设计系统蒸馏
-- **素材库**（图标 / 图表 / 动效 / 组件选型指南）——云仓不手搓
-- **54 个设计系统分桶索引**（A-H 8 场景）
-- **项目规范模板** + **反馈闭环**
-- **GATE 0-3 门禁**（硬拦截防 AI 翻车）
-
----
-
-## 文件位置（安装后）
+很多 AI 改界面翻车，不是模型不懂设计，而是**没有可执行的判断标准**。这个 skill 把顶级设计团队的**知识 + 工序 + 红线**蒸馏成 agent 能直接照做的规则，并配了 **4 道硬门禁**，防止它自作主张乱来。
 
 ```
-~/.claude/skills/designer/SKILL.md        ← 入口 skill（Claude Code 自动加载）
-~/.agents/skills/designer/SKILL.md        ← DSH 用户技能根（DeepSeek Harness 自动加载）
-~/.hermes/design-kb/manifest.json         ← 通用库自动安装清单
-~/.hermes/design-kb/L1-principles/        ← 设计原理 + 参考解剖 + 素材库 + 分桶索引
-~/.hermes/design-kb/L2-projects/          ← 项目规范（每项目一份 DESIGN.md）
-~/.hermes/design-kb/L3-lessons/           ← 反馈闭环（纠正记录）
+【同类项目】 给你一份文档堆 → agent 看了照样乱改 UI
+【本 skill】   蒸馏成可执行规则 + 门禁 → agent 先问参考、克制装饰、用真实数据
 ```
+
+## 🎬 效果对比（前后 30 秒 Demo）
+
+> 【在这里放 GIF】同一句话：「把这个页面改高级一点」
+> **没装**：加渐变、加高光、塞 emoji、上假数据
+> **装了**：先问你参考哪个系统 → 按规范排版 → 用现成素材 → 图表用真实数据
 
 ---
 
-## 安装到 Claude Code
+## 它给你什么（开箱即用）
 
-### 一键安装（推荐）
+| 模块 | 内容 |
+|---|---|
+| 🧠 设计原理 | Gestalt / 排版 / 色彩 / 交互 / 无障碍（学科共识） |
+| 🔍 参考解剖 | Linear / Stripe / Vercel / Claude / Notion / Supabase / Apple / Airbnb... **20 大设计系统蒸馏**（数据来自 open-design token 实测） |
+| 📦 素材库 | 图标 / 图表 / 动效 / 组件选型指南（"现成的绝不手搓"） |
+| 🗂 分桶索引 | 152 个设计系统分桶（A–J 10 场景，20 个已蒸馏 + 132 备选） |
+| 📐 项目规范 | 每项目一份 `DESIGN.md` + 反馈闭环 |
+| 🚧 **GATE 0–3 门禁** | **硬拦截，防 AI 翻车** |
 
+### GATE 门禁（这是它跟普通 skill 最大的区别）
+- **GATE 0 · 开工前**：必须先确认参考系统，禁止未确认就全量改
+- **GATE 1 · 原型**：先做 1 个给你看，确认再铺开
+- **GATE 2 · 素材**：库里有的用现成的，禁止手搓
+- **GATE 3 · 数据**：禁止假数据（`Math.sin()` 这类最严重错误）
+
+---
+
+## 安装（3 步，任选平台）
+
+### Claude Code
 ```bash
-bash install.sh
+git clone https://github.com/TheonePro7/design-agent-skill.git
+cd design-agent-skill && bash install.sh
 ```
+> 脚本自动把 `skills/designer/`（含 `resources/` 自包含知识库）装到 `~/.claude/skills/designer/`。
 
-脚本会：
-1. 把 `skills/designer/`（含 `resources/` 知识库，自包含）复制到 `~/.claude/skills/designer/`
-2. 把 `L1-principles/` 等知识库复制到 `~/.hermes/design-kb/`（兼容本地 Hermes）
-3. 校验所有文件
-
----
-
-## 安装到 Hermes（专门指南）
-
-Hermes 用**不同的 skill 格式**（引号 description + version/author/platforms 字段，子目录叫 `references/` 而非 `resources/`），所以有**独立的安装包** `hermes/designer/`。
-
-### 方法一：手动安装脚本（推荐）
-
-```bash
-bash install-hermes.sh            # 从当前目录安装
-bash install-hermes.sh --update   # 从 GitHub 拉最新再装
-```
-
-脚本会：把 `hermes/designer/`（含 `references/` 知识库）装到 `~/.hermes/skills/creative/designer/`。
-
-### 方法二：hermes CLI 安装
-
-```bash
-# 从 GitHub 直接安装（identifier 指向 SKILL.md 的 raw URL）
-hermes skills install https://raw.githubusercontent.com/TheonePro7/design-agent-skill/main/hermes/designer/SKILL.md --category creative --name designer --yes
-```
-
-### Hermes 里怎么用
-
-装好后，Hermes 会在对话中说"设计/改样式/UI"等词时自动加载 `designer`，或手动：
-```
-/designer
-```
-或加载 skill 后说"加载 designer，优化这个页面"。
-
-### Hermes skill 目录（安装后）
-
-```
-~/.hermes/skills/creative/designer/
-├── SKILL.md                    # Hermes 格式入口（引号 description + version + author）
-└── references/                 # Hermes 用 references/（Claude Code 用 resources/）
-    ├── _INDEX.md               # 54系统分桶索引
-    ├── assets-index.md         # L0素材库选型
-    ├── reference-*.md          # 参考解剖（Linear/Stripe/Vercel/Claude）
-    ├── principles-*.md         # 5大原理（布局/排版/色彩/交互/无障碍）
-    └── corrections.md          # 反馈闭环
-```
-
-> 注意：Hermes 和 Claude Code 的 skill 是**两份独立副本**（格式不同）。`install.sh` 装 Claude Code 版，`install-hermes.sh` 装 Hermes 版。
-
----
-
-## 安装到 DSH（DeepSeek Harness）
-
-DSH 复用 **Claude Code 的目录式 skill 格式**（`SKILL.md` + `resources/`），所以**不需要单独拷一份**：直接用 `skills/designer/` 即可。DSH 会解析头部的 `name` / `description`，并支持可选字段 `whenToUse` / `metadata`。
-
-### 一键安装（推荐）
-
+### DSH（DeepSeek Harness）
 ```bash
 bash install-dsh.sh
+# 装到 DSH 用户技能根 ~/.agents/skills/designer/
 ```
 
-脚本会：
-1. 把 `skills/designer/`（含 `resources/` 知识库，自包含）复制到 `~/.agents/skills/designer/`（DSH 的 user-agents 用户技能根）
-2. 同步 `L1-principles/` 等知识库到 `~/.hermes/design-kb/`（与 `install.sh` 一致）
-3. 校验所有文件
-
-### 手动安装
-
+### Hermes
 ```bash
-# 把自包含 skill 复制到 DSH 用户技能根
-mkdir -p ~/.agents/skills
-cp -r skills/designer ~/.agents/skills/designer
+bash install-hermes.sh          # 从当前目录装
+bash install-hermes.sh --update # 从 GitHub 拉最新再装
 ```
-
-> 安装目录可用环境变量覆盖：`DSH_AGENTS_HOME`，或用 `bash install-dsh.sh --target /path/to/skills`。
-
-### DSH 里怎么用
-
-装好后，DSH 会在对话中说"设计/改样式/UI/页面美化"等词时自动关联 `designer`，或手动：
-```
-/designer
-```
-或加载 skill 后说"加载 designer，优化这个页面"。
-
-### DSH skill 目录（安装后）
-
-```
-~/.agents/skills/designer/
-├── SKILL.md                    # DSH 格式入口（yaml 头部 name/description/whenToUse）
-└── resources/                  # DSH 与 Claude Code 共用 resources/
-    ├── _INDEX.md               # 54系统分桶索引
-    ├── assets-index.md         # L0素材库选型
-    ├── reference-*.md          # 参考解剖（Linear/Stripe/Vercel/Claude）
-    └── principles-*.md         # 5大原理（布局/排版/色彩/交互/无障碍）
-```
-
-> DSH 使用与 Claude Code 相同的目录式 skill，因此无独立副本；Hermes 仍是独立格式（见上）。
+> Hermes 用不同 skill 格式（`references/` 而非 `resources/`），本仓库提供**独立 Hermes 安装包** `hermes/designer/`。
 
 ---
 
-### 自动更新（推荐给分发的机器）
-
-```bash
-# 之后每次更新，拉 GitHub 最新再装
-bash install.sh --update        # Claude Code
-bash install-dsh.sh --update    # DSH（DeepSeek Harness）
-bash install-hermes.sh --update # Hermes
-```
-
-`--update` 会从 GitHub 拉取最新代码再安装，保证每台机器都拿到最新版 designer（含更新的知识库 resources/）。
-
-> 注意：`--update` 需要该机器能访问 GitHub（国内可配代理 `git config http.proxy http://127.0.0.1:7891`）。
+## 设计哲学（给它立规矩）
+1. **参考优先**：用户说"高级/好看" → 先问参考，不猜
+2. **克制装饰**：禁渐变、禁彩色 glow、禁装饰条、禁 emoji 图标
+3. **不要凑合**：纯色卡、无图标输入框 = 会被骂"凑合"
+4. **素材优先**：assets-index 里有的用现成的
+5. **数据真实**：图表禁假数据（最严重错误）
 
 ---
 
-## 分发机制（GitHub 自动更新，不依赖 Anthropic 官方订阅）
-
-本方案**完全不依赖 claude.ai 官方账号 / Shared skills**，因为 Claude Code 连的是 DeepSeek/cc-switch，走 GitHub 分发：
-
-- **权威源**：`TheonePro7/design-agent-skill` 仓库
-- **机器安装**：`git clone` + `bash install.sh`
-- **机器更新**：`bash install.sh --update`（拉最新）
-- **skill 自包含**：知识库已打进 `skills/designer/resources/`，不依赖本机 `~/.hermes/design-kb/`
-
-**更新流程**（你 Central 维护 → 大家自动同步）：
-1. 你在本地更新 `design-agent-skill` 仓库（改知识库/SKILL.md）
-2. `git push` 到 GitHub
-3. 各机器跑 `bash install.sh --update` 拉最新
-
-
-### 手动安装
-
-```bash
-# 1. 拷贝 skill 入口到 Claude Code 全局技能目录
-cp -r skills/designer ~/.claude/skills/designer
-
-# 2. 拷贝知识库到 Hermes 根目录
-mkdir -p ~/.hermes/design-kb
-cp -r L1-principles ~/.hermes/design-kb/
-cp -r L2-projects ~/.hermes/design-kb/
-cp -r L3-lessons ~/.hermes/design-kb/
-cp manifest.json ~/.hermes/design-kb/
-```
+## 它跟谁配
+设计师的**上游**是产品经理 → 建议搭配 [`product-manager-skill`](https://github.com/TheonePro7/product-manager-skill)：先定"展示什么字段、给谁看、体验是什么"，再谈"怎么做好看"。
 
 ---
 
-## Claude Code 怎么用
-
-### 自动加载
-Clone 后 `skill_view(name='designer')`，或在对话中说"设计/UI/前端/改样式"，Claude Code 会自动加载。
-
-### 手动调用
-在 Claude Code 里：
-```
-/designer
-```
-或直接说：
-```
-加载 designer skill，优化这个页面
-```
-
-### 触发流程
-Claude Code 加载 `designer` skill 后，会：
-1. 读知识库（L1 原理 + 参考 + 素材库）
-2. 读项目 DESIGN.md（L2，有则用）
-3. 读反馈闭环（L3，避免重复踩坑）
-4. 遵守 GATE 0-3 门禁
-5. 查 manifest.json 自动装通用库
-
----
-
-## 门禁 GATE 0-3（硬拦截，防 AI 翻车）
-
-| GATE | 时机 | 规则 | 违反后果 |
-|:--|:--|:--|:--|
-| **GATE 0** | 开工前 | 必须确认参考系统（Linear/Stripe/Vercel/Claude），不瞎猜 | 停下问参考 |
-| **GATE 1** | 实现中 | 颜色只用语义 token；用现成库不手搓；禁假数据；禁过度装饰 | 回退改标准做法 |
-| **GATE 2** | 验收前 | 必须截图验证效果 | 先截屏确认 |
-| **GATE 3** | 提交前 | 编译零错误 | 修到通过 |
-
----
-
-## 目录结构
-
-```
-design-agent-skill/
-├── README.md              # 本文件
-├── install.sh             # Claude Code 一键安装脚本
-├── install-hermes.sh      # Hermes 安装脚本（独立格式）
-├── install-dsh.sh         # DSH（DeepSeek Harness）安装脚本
-├── manifest.json          # 通用库自动安装清单
-├── skills/designer/
-│   └── SKILL.md           # 设计 Agent 入口（Claude Code / DSH 共用，含 GATE 门禁）
-├── L1-principles/         # 设计原理 + 参考解剖
-│   ├── _INDEX.md          # 54系统分桶索引 A-H
-│   ├── assets-index.md    # 素材库·不手搓
-│   ├── principles-*.md    # 5学科原理
-│   └── reference-*.md     # 4参考解剖
-├── L2-projects/           # 项目规范
-│   ├── xgeo.md            # XGEO 示例
-│   └── _TEMPLATE.md       # 新项目模板
-└── L3-lessons/
-    └── corrections.md     # 反馈闭环
-```
-
----
-
-## 核心哲学
-
-1. **参考优先**——用户说"高级/好看"先问参考，不猜
-2. **克制装饰**——禁渐变/彩色glow/::before色条/emoji图标
-3. **不要凑合**——半成品会被骂"凑合"
-4. **素材优先**——现成库先用，不手搓
-5. **数据真实**——图表禁 `Math.sin()` 假数据（最严重错误）
-
-## 相关
-
-- **Product-Manager Skill**（产品经理思维，设计的上游）：https://github.com/TheonePro7/product-manager-skill
+**⭐ 好用请给个 Star，欢迎 issue / PR 一起把它变得更专业。**
