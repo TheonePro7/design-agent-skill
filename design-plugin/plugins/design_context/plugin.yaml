@@ -1,0 +1,7 @@
+name: design_context
+version: 1.0.0
+description: 设计标准自动注入。每次 pre_llm_call 注入设计核心哲学 + GATE 0-3 门禁，让 agent 默认带设计标准（无需打 /skill 手动触发）。
+author: XinXiang AI
+provides_hooks:
+  - pre_llm_call
+  - on_session_start
